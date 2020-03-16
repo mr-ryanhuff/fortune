@@ -11,7 +11,7 @@ import Game, { CreateGame } from './game';
 import Login from './login';
 import Play from './play';
 import Register from './register';
-
+import Leaderboard from './leaderboard';
 
 interface MatchParams {
   gameId?: string;
@@ -36,6 +36,9 @@ function App() {
             <Route path="/register" component={Register} />
             <Route path="/play" component={Play} />
             <Route path="/create" component={CreateGame} />
+            <Route path="/:gameId/leaderboard" render={({match}) => {
+              return <Leaderboard gameId={match.params.gameId} />
+            }} />
           </Switch>
         </div>
     </div>
