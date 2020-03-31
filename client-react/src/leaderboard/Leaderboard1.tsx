@@ -2,7 +2,9 @@ import * as React from "react";
 //mport React, { useMemo, useState, useEffect } from "react";
 import { Jumbotron } from "react-bootstrap";
 import {leaders} from './data'
-import Table from './Table'
+import Datasort from 'react-data-sort'
+import sort from 'fast-sort';
+
 // import table from "./table";
 /*
 interface LeaderboardProps {
@@ -28,7 +30,7 @@ interface LeaderboardProps {
 export default class Leaderboard extends React.Component {
 
   state ={
-    leaders:leaders,
+    leaders:leaders.sort(),
     isActive:false,
     pageNumber: 1,
     isEnableNext:false,
@@ -37,10 +39,12 @@ export default class Leaderboard extends React.Component {
   };
 
   componentDidMount(){
+    this.state.leaders.sort();
     if(this.state.leaders.length>25)
     this.setState({
       isActive: true
     });
+    
     if(this.state.pageNumber==1)
     this.setState({
       isEnablePrev:true
@@ -54,45 +58,47 @@ export default class Leaderboard extends React.Component {
       isEnableNext:false
     })
   }
+  
   };
   // pageCal = () => {
   //   this.setState(prevState=>{return {pageNumber: prevState.pageNumber +1}})
   // }
-
   render() {
-    
-
+    sort(this.state.leaders).desc(u=>u.score);
     return (
       <div>
         <Jumbotron>
           <h1> Game Leaderboard</h1>
-          <table>
-          <tr>
+          
+          
+<Datasort
+      data={this.state.leaders}
+      render={({ data }) => (
+        <table>
+            <tr>
               <th>Rank </th>
               <th>Username</th>
               <th>Score</th>
           </tr>
-          <tr>
-              <td>{this.state.leaders[0].id}</td>
-              <td>{this.state.leaders[0].name}</td>
-              <td>{this.state.leaders[0].score}</td>
-          </tr>
-          <tr>
-              <td>{this.state.leaders[1].id}</td>
-              <td>{this.state.leaders[1].name}</td>
-              <td>{this.state.leaders[1].score}</td>
-          </tr>
-          <tr>
-              <td>{this.state.leaders[2].id}</td>
-              <td>{this.state.leaders[2].name}</td>
-              <td>{this.state.leaders[2].score}</td>
-          </tr>
-          <tr>
-              <td>{this.state.leaders[3].id}</td>
-              <td>{this.state.leaders[3].name}</td>
-              <td>{this.state.leaders[3].score}</td>
-          </tr>
-          </table>
+            {data.map(({ id, name, score}) => (
+              <tr key={id}>
+                <td>{id}</td>
+                <td>{name}</td>
+                <td>{score}</td>
+              </tr>
+            ))}
+         
+        </table>
+      )}
+    />
+          {/* // {this.state.leaders.map(item=>
+          // <tr>
+          //     <td>{item.id}</td>
+          //     <td>{item.name}</td>
+          //     <td>{item.score}</td>
+          // </tr>
+          // )} */}
+     
 
 
 

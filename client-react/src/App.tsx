@@ -51,3 +51,15 @@ function App() {
 }
 
 export default App;
+
+/*
+<Route
+path="/game/:gameId/leaderboard"
+render={({ match }) => {
+  return <Leaderboard gameId={match.params.gameId} />;
+}}
+*/
+
+/*
+<Route path="/leaderboard" component={Leaderboard} />
+*/
