@@ -1,9 +1,9 @@
 import * as React from "react";
 //mport React, { useMemo, useState, useEffect } from "react";
 import { Jumbotron } from "react-bootstrap";
-import {leaders} from './data'
-import Datasort from 'react-data-sort'
-import sort from 'fast-sort';
+import { leaders } from "./data";
+import Datasort from "react-data-sort";
+import sort from "fast-sort";
 
 // import table from "./table";
 /*
@@ -27,70 +27,72 @@ interface LeaderboardProps {
 	error: string;
 }
 */
-export default class Leaderboard extends React.Component {
 
-  state ={
-    leaders:leaders.sort(),
-    isActive:false,
+export interface GameProps {
+  gameId?: string;
+}
+
+export default class Leaderboard extends React.Component<GameProps> {
+  state = {
+    leaders: leaders.sort(),
+    isActive: false,
     pageNumber: 1,
-    isEnableNext:false,
-    isEnablePrev:false,
-    pages:Math.ceil(leaders.length/25)
+    isEnableNext: false,
+    isEnablePrev: false,
+    pages: Math.ceil(leaders.length / 25)
   };
 
-  componentDidMount(){
+  componentDidMount() {
     this.state.leaders.sort();
-    if(this.state.leaders.length>25)
-    this.setState({
-      isActive: true
-    });
-    
-    if(this.state.pageNumber==1)
-    this.setState({
-      isEnablePrev:true
-    })
-    if(this.state.pageNumber==this.state.pages)
-    {this.setState({
-      isEnableNext:true
-    })
+    if (this.state.leaders.length > 25)
+      this.setState({
+        isActive: true
+      });
+
+    if (this.state.pageNumber == 1)
+      this.setState({
+        isEnablePrev: true
+      });
+    if (this.state.pageNumber == this.state.pages) {
+      this.setState({
+        isEnableNext: true
+      });
+    } else {
+      this.setState({
+        isEnableNext: false
+      });
+    }
   }
-  else {this.setState({
-      isEnableNext:false
-    })
-  }
-  
-  };
   // pageCal = () => {
   //   this.setState(prevState=>{return {pageNumber: prevState.pageNumber +1}})
   // }
   render() {
-    sort(this.state.leaders).desc(u=>u.score);
+    const gameId = this.props.gameId;
+    sort(this.state.leaders).desc(u => u.score);
     return (
       <div>
         <Jumbotron>
           <h1> Game Leaderboard</h1>
-          
-          
-<Datasort
-      data={this.state.leaders}
-      render={({ data }) => (
-        <table>
-            <tr>
-              <th>Rank </th>
-              <th>Username</th>
-              <th>Score</th>
-          </tr>
-            {data.map(({ id, name, score}) => (
-              <tr key={id}>
-                <td>{id}</td>
-                <td>{name}</td>
-                <td>{score}</td>
-              </tr>
-            ))}
-         
-        </table>
-      )}
-    />
+
+          <Datasort
+            data={this.state.leaders}
+            render={({ data }) => (
+              <table>
+                <tr>
+                  <th>Rank </th>
+                  <th>Username</th>
+                  <th>Score</th>
+                </tr>
+                {data.map(({ id, name, score }) => (
+                  <tr key={id}>
+                    <td>{id}</td>
+                    <td>{name}</td>
+                    <td>{score}</td>
+                  </tr>
+                ))}
+              </table>
+            )}
+          />
           {/* // {this.state.leaders.map(item=>
           // <tr>
           //     <td>{item.id}</td>
@@ -98,13 +100,23 @@ export default class Leaderboard extends React.Component {
           //     <td>{item.score}</td>
           // </tr>
           // )} */}
-     
-
-
-
         </Jumbotron>
-        {this.state.isActive && <button className="leaderBoard-button" disabled={this.state.isEnablePrev} >prev page</button>}
-        {this.state.isActive && <button className="leaderBoard-button" disabled={this.state.isEnableNext}>next page</button>}              
+        {this.state.isActive && (
+          <button
+            className="leaderBoard-button"
+            disabled={this.state.isEnablePrev}
+          >
+            prev page
+          </button>
+        )}
+        {this.state.isActive && (
+          <button
+            className="leaderBoard-button"
+            disabled={this.state.isEnableNext}
+          >
+            next page
+          </button>
+        )}
       </div>
     );
   }

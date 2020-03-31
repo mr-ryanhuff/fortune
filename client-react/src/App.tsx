@@ -42,7 +42,11 @@ function App() {
           <Route path="/register" component={Register} />
           <Route path="/play" component={Play} />
           <Route path="/create" component={CreateGame} />
-          <Route path="/leaderboard" component={Leaderboard} />
+          <Route
+            path="/game/:gameId/leaderboard"
+            render={({ match }) => {
+              return <Leaderboard gameId={match.params.gameId} />;
+            }}
           />
         </Switch>
       </div>
