@@ -27,12 +27,7 @@ interface LeaderboardProps {
 	error: string;
 }
 */
-
-export interface GameProps {
-  gameId?: string;
-}
-
-export default class Leaderboard extends React.Component<GameProps> {
+export default class Leaderboard extends React.Component {
   state = {
     leaders: leaders.sort(),
     isActive: false,
@@ -44,6 +39,9 @@ export default class Leaderboard extends React.Component<GameProps> {
 
   componentDidMount() {
     this.state.leaders.sort();
+    for (let i = 0; i < this.state.leaders.length; i++) {
+      this.state.leaders[i].id = i + 1;
+    }
     if (this.state.leaders.length > 25)
       this.setState({
         isActive: true
@@ -67,7 +65,6 @@ export default class Leaderboard extends React.Component<GameProps> {
   //   this.setState(prevState=>{return {pageNumber: prevState.pageNumber +1}})
   // }
   render() {
-    const gameId = this.props.gameId;
     sort(this.state.leaders).desc(u => u.score);
     return (
       <div>
