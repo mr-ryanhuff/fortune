@@ -1,39 +1,74 @@
 import * as React from "react";
-import { leaders } from "./data";
 import { MDBDataTable } from "mdbreact";
 import sort from "fast-sort";
 
-sort(leaders).desc(u => u.score);
-for (let i = 0; i < leaders.length; i++) {
-  leaders[i].id = i + 1;
+import Actions from '../redux/actions';
+import { RootState } from '../redux/reducers';
+import { connect } from 'react-redux';
+
+import CurrentLeader from './CurrentLeader';
+
+interface LeaderBoardProps {
+  name?: string;
+  allLeaders: Array<{ id: number, name: string, score: string }>;
+  getAllLeaders: () => {};
+  getAllCoins: () => {};
 }
 
-const DatatablePage = () => {
-  const data = {
-    columns: [
-      {
-        label: "Rank",
-        field: "id",
-        width: 150
-      },
-      {
-        label: "Username",
-        field: "name",
-        width: 270
-      },
-      {
-        label: "Score",
-        field: "score",
-        sort: "asc",
-        width: 200
-      }
-    ],
-    rows: leaders
-  };
+class DatatablePage extends React.Component<LeaderBoardProps> {
 
-  return <MDBDataTable striped bordered small data={data} />;
+  componentDidMount() {
+    this.props.getAllLeaders();
+  }
+
+  render() {
+    const {
+      allLeaders,
+    } = this.props;
+
+    // TODO: IMPORTANT `u.id` need to change to `u.score`
+    sort(allLeaders).desc((u: any) => u.symbol);
+    for (let i = 0; i < allLeaders.length; i++) {
+      allLeaders[i].id = i + 1;
+    }
+
+    const data = {
+      columns: [
+        {
+          label: "Rank",
+          field: "id",
+          width: 150
+        },
+        {
+          label: "Username",
+          field: "name",
+          width: 270
+        },
+        {
+          label: "Score",
+          field: "score",
+          sort: "asc",
+          width: 200
+        }
+      ],
+      rows: allLeaders
+    };
+    return (
+      <>
+        <CurrentLeader name={'FaZe Crypto'} />
+        <MDBDataTable striped bordered small data={ data } />
+      </>
+    );
+  }
+}
+
+const mapStateToProps = (state: RootState) => ({
+  allLeaders: state.leaders.leaders,
+});
+const mapDispatchToProps = {
+  getAllLeaders: Actions.leaders.getAllLeaders,
 };
-export default DatatablePage;
+export default connect(mapStateToProps, mapDispatchToProps)(DatatablePage);
 
 /*
 import React, { Component } from 'react'
@@ -43,7 +78,7 @@ export default class Leaderboarder1 extends Component {
     render() {
         return (
             <Leaderboarder>
-                
+
             </Leaderboarder>
         )
     }
