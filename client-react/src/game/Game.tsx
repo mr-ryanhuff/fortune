@@ -78,7 +78,7 @@ class Game extends React.Component<GameProps, GameState> {
 			<div className="Game">
 				<Container fluid>
 					<HeaderBar
-						game={game.data}
+						game={game.data} 
 						global={global}
 						history={this.props.history}
 						gameId={gameId}

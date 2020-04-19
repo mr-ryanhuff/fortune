@@ -11,7 +11,7 @@ services:
       context: ./client-react/
     volumes:
       - ./client-react:/app
-      - /app/node_modules
+      - /node_modules
   api:
     depends_on:
       - postgres-testing

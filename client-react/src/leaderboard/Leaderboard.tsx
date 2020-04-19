@@ -1,27 +1,30 @@
 import * as React from "react";
-import { MDBDataTable } from "mdbreact";
 import sort from "fast-sort";
+import { MDBDataTable } from "mdbreact";
 
-import Actions from "../redux/actions";
-import { RootState } from "../redux/reducers";
-import { connect } from "react-redux";
+import Actions from '../redux/actions';
+import { RootState } from '../redux/reducers';
+import { connect } from 'react-redux';
 
-import CurrentLeader from "./CurrentLeader";
+import CurrentLeader from './CurrentLeader';
 
 interface LeaderBoardProps {
   name?: string;
   gameId?: string;
-  allLeaders: Array<{ id: number; name: string; score: string }>;
+  allLeaders: Array<{ id: number, name: string, score: string }>;
   getAllLeaders: () => {};
 }
 
 class Leaderboard extends React.Component<LeaderBoardProps> {
+
   componentDidMount() {
     this.props.getAllLeaders();
   }
 
   render() {
-    const { allLeaders } = this.props;
+    const {
+      allLeaders,
+    } = this.props;
 
     // TODO: IMPORTANT `u.id` need to change to `u.score`
     sort(allLeaders).desc((u: any) => u.symbol);
@@ -34,26 +37,26 @@ class Leaderboard extends React.Component<LeaderBoardProps> {
         {
           label: "Rank",
           field: "id",
-          width: 150,
+          width: 150
         },
         {
           label: "Username",
           field: "name",
-          width: 270,
+          width: 270
         },
         {
           label: "Score",
           field: "score",
           sort: "asc",
-          width: 200,
-        },
+          width: 200
+        }
       ],
-      rows: allLeaders,
+      rows: allLeaders
     };
     return (
       <>
-        <CurrentLeader name={"FaZe Crypto"} />
-        <MDBDataTable striped bordered small data={data} />
+        <CurrentLeader name={'FaZe Crypto'} />
+        <MDBDataTable bordered striped small data={ data } />
       </>
     );
   }
