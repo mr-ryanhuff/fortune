@@ -9,7 +9,7 @@ import { fetchAuthToken } from './Auth'
 type CreateGameResponse = {
   data: {
     id: number;
-    name: string;
+    name: string; 
     startingCash: string;
     shareableLink: string;
     shareableCode: string;
